@@ -22,8 +22,7 @@ app.use(expressWinston.logger({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  // this mandatory configuration ensures that session IDs are not predictable
-  secret: uuid.v4(), // or whatever you like
+  secret: uuid.v4(), // Generate a random uuid for the secret since we are running a single server only. This way the secret it only stored in memory
   // these options are recommended and reduce session concurrency issues
   resave: false,
   saveUnitialized: false
