@@ -1,24 +1,33 @@
-/**
- * Module dependencies.
- */
+//@flow
+
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
-const chalk = require('chalk');
+const expressWinston = require('express-winston');
 const path = require('path');
+const uuid = require('node-uuid');
 
 const api = require('./api');
+const logger = require('./logger');
 
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
 
 app.use(compression());
-app.use(logger('dev'));
+app.use(expressWinston.logger({
+  winstonInstance: logger
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  // this mandatory configuration ensures that session IDs are not predictable
+  secret: uuid.v4(), // or whatever you like
+  // these options are recommended and reduce session concurrency issues
+  resave: false,
+  saveUnitialized: false
+}));
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/favicon.ico', (req, res) => res.redirect('/static/favicon.ico'));
@@ -34,8 +43,7 @@ app.get('*', (req, res) => {
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
-  console.log('  Press CTRL-C to stop\n');
+  logger.info('App is running', {port: app.get('port'), env: app.get('env')});
 });
 
 module.exports = app;

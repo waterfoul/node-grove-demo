@@ -1,6 +1,9 @@
+//@flow
+
 import React from 'react';
 import { connect } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+// import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 import Root from './components/Root';
 // import Home from './components/Home';
 // import Login from './components/Login';
@@ -12,7 +15,7 @@ import Root from './components/Root';
 
 /* -----------------    COMPONENT     ------------------ */
 
-const Routes = ({ fetchInitialData, onStoryEnter }) => (
+const Routes = () => (
   <Router history={browserHistory}>
     <Route path="/" component={Root}>
       {/*<IndexRoute component={Home} />*/}
