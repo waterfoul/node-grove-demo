@@ -1,4 +1,5 @@
 //@flow
+// Digital Output
 
 const express = require('express');
 const Commands = require('node-grovepi').GrovePi.commands

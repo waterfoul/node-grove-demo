@@ -1,4 +1,5 @@
 //@flow
+// Digital Input
 
 const DigitalSensor = require('node-grovepi').GrovePi.sensors.base.Digital;
 const commands = require('node-grovepi').GrovePi.commands;

@@ -1,4 +1,5 @@
 //@flow
+// Analog Input
 
 const LightAnalogSensor = require('node-grovepi').GrovePi.sensors.LightAnalog;
 const socket = require('../socket');

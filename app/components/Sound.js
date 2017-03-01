@@ -3,21 +3,21 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {subscribe} from '../redux/light';
+import {subscribe} from '../redux/sound';
 
 
-export class Light extends Component {
+export class Sound extends Component {
   constructor(props) {
     super(props);
     props.subscribe();
   }
 
   render() {
-    const {socket, darkVal, value} = this.props;
+    const {socket, loudVal, value} = this.props;
 
     return (
       <div className="container-fluid">
-        Light Socket {socket}:&nbsp;
+        Sound Socket {socket}:&nbsp;
         <span style={{
           border: '1px solid black',
           display: 'inline-block',
@@ -27,7 +27,7 @@ export class Light extends Component {
           <div className="dark-bar" style={{
             backgroundColor: 'gray',
             height: '100%',
-            width: (value / darkVal * 100) + '%',
+            width: (value / loudVal * 100) + '%',
             float: 'right'
           }} />
         </span>
@@ -36,13 +36,13 @@ export class Light extends Component {
   }
 }
 
-const mapStateToProps = ({light}, {socket}) => ({
+const mapStateToProps = ({sound}, {socket}) => ({
   socket,
-  value: light[socket]
+  value: sound[socket]
 });
 
 const mapDispatchToProps = (dispatch, {socket}) => ({
   subscribe: () => dispatch(subscribe(socket))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps) (Light);
+export default connect(mapStateToProps, mapDispatchToProps) (Sound);
