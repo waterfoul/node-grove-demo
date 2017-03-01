@@ -8,11 +8,11 @@ import {TurnOn, TurnOff} from '../redux/led';
 export const Led = ({socket, color, status, on, off}) => (
   <div id="led" className="container-fluid">
     <label>
-      {color} Led Socket {socket}&nbsp;
-      <span style={{color: status ? 'black' : 'white'}}>💡</span>&nbsp;
+      {color} Led Socket {socket}:&nbsp;
       <button onClick={() => on(socket)}>On</button>&nbsp;
     </label>&nbsp;
-    <button onClick={() => off(socket)}>Off</button>
+    <button onClick={() => off(socket)}>Off</button>&nbsp;
+    <span style={{color: status ? 'black' : 'white'}}>💡</span>
   </div>
 );
 

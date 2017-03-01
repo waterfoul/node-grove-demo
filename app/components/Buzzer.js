@@ -8,7 +8,7 @@ import {Beep} from '../redux/buzzer';
 export const Buzzer = ({socket, beep}) =>  (
   <div id="led" className="container-fluid">
     <label>
-      Buzzer Socket {socket}&nbsp;
+      Buzzer Socket {socket}:&nbsp;
       <button onClick={() => beep(socket)}>Beep</button>
     </label>&nbsp;
   </div>
