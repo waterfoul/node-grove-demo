@@ -2,30 +2,17 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-// import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import Root from './components/Root';
-// import Home from './components/Home';
-// import Login from './components/Login';
-// import Signup from './components/Signup';
-// import UserList from './components/User/UserList';
-// import UserDetail from './components/User/UserDetail';
-// import StoryList from './components/Story/StoryList';
-// import StoryDetail from './components/Story/StoryDetail';
+import Home from './components/Home';
 
 /* -----------------    COMPONENT     ------------------ */
 
 const Routes = () => (
   <Router history={browserHistory}>
     <Route path="/" component={Root}>
-      {/*<IndexRoute component={Home} />*/}
-      {/*<Route path="login" component={Login} />*/}
-      {/*<Route path="signup" component={Signup} />*/}
-      {/*<Route path="users" component={UserList} />*/}
-      {/*<Route path="users/:id" component={UserDetail} />*/}
-      {/*<Route path="stories" component={StoryList} />*/}
-      {/*<Route path="stories/:id" component={StoryDetail} onEnter={onStoryEnter} />*/}
-      {/*<Route path="*" component={Home} />*/}
+      <IndexRoute component={Home} />
+      <Route path="*" component={Home} />
     </Route>
   </Router>
 );

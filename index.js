@@ -7,11 +7,15 @@ const bodyParser = require('body-parser');
 const expressWinston = require('express-winston');
 const path = require('path');
 const uuid = require('node-uuid');
+const http = require('http');
 
 const api = require('./api');
 const logger = require('./logger');
+const socket = require('./socket');
 
 const app = express();
+const server = http.createServer(app);
+socket.server.installHandlers(server, {prefix:'/socket'});
 
 app.set('port', process.env.PORT || 3000);
 
@@ -33,7 +37,7 @@ app.use('/favicon.ico', (req, res) => res.redirect('/static/favicon.ico'));
 
 app.use('/api', api);
 
-const indexFile = path.join(__dirname, 'static', 'index.html')
+const indexFile = path.join(__dirname, 'static', 'index.html');
 app.get('*', (req, res) => {
   res.sendFile(indexFile);
 });
@@ -41,7 +45,7 @@ app.get('*', (req, res) => {
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
   logger.info('App is running', {port: app.get('port'), env: app.get('env')});
 });
 
