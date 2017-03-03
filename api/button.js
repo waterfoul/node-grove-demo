@@ -14,13 +14,13 @@ function Button() {
   DigitalSensor.apply(this, Array.prototype.slice.call(arguments))
 }
 
-Button.prototype = new DigitalSensor()
+Button.prototype = new DigitalSensor();
 
 Button.prototype.read = function() {
-  const write = this.board.writeBytes(commands.dRead.concat([this.pin, commands.unused, commands.unused]))
+  const write = this.board.writeBytes(commands.dRead.concat([this.pin, commands.unused, commands.unused]));
 
   if (write) {
-    this.board.wait(100)
+    this.board.wait(100);
     return this.board.readByte()[0] === 1;
   } else {
     return false
@@ -28,6 +28,8 @@ Button.prototype.read = function() {
 };
 
 socket.onSubscribe('button', (client, channel) => {
+  //Trigger the next update to be sent
+  oldValue = null;
   if(!subs[channel] || subs[channel].length === 0) {
     subs[channel] = [];
 

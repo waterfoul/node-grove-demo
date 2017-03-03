@@ -1,29 +1,34 @@
 //@flow
-// Analog Input
+// Digital Input
+// http://wiki.seeed.cc/Grove-TemperatureAndHumidity_Sensor/
 
-const LightAnalogSensor = require('node-grovepi').GrovePi.sensors.LightAnalog;
+const UltrasonicDigitalSensor = require('node-grovepi').GrovePi.sensors.UltrasonicDigital;
 const socket = require('../socket');
 
 const subs = {};
 const sensors = {};
 let oldValue = null;
 
-socket.onSubscribe('light', (client, channel) => {
+socket.onSubscribe('rangeFinder', (client, channel) => {
   //Trigger the next update to be sent
-  oldValue = null
+  oldValue = null;
   if(!subs[channel] || subs[channel].length === 0) {
     subs[channel] = [];
 
-    sensors[channel] = new LightAnalogSensor(channel);
+    sensors[channel] = new UltrasonicDigitalSensor(channel);
     sensors[channel].stream(1000, (value) => {
       if(value !== oldValue) {
         oldValue = value;
 
-        const data = JSON.stringify({channel, name: 'light', value});
+        const data = JSON.stringify({
+          channel,
+          name: 'rangeFinder',
+          value
+        });
         subs[channel].forEach((sub) => sub.write(data));
       }
     });
   }
-  
+
   subs[channel].push(client);
 });

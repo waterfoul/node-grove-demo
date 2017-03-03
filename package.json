@@ -6,6 +6,8 @@
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "express-winston": "^2.2.0",
+    "i2c": "^0.2.3",
+    "johnny-five": "^0.10.6",
     "node-grovepi": "^2.1.1",
     "node-uuid": "^1.4.7",
     "react": "^15.4.2",
@@ -33,5 +35,9 @@
     "eslint-plugin-react": "^6.10.0",
     "flow-bin": "^0.40.0",
     "webpack": "^2.2.1"
+  },
+  "optionalDependencies": {
+    "raspi-io": "^7.2.4"
   }
+
 }
