@@ -2,35 +2,17 @@
 
 import axios from 'axios';
 
-export const SET_RED = 'LCD_SET_RED';
-export const SET_GREEN = 'LCD_SET_GREEN';
-export const SET_BLUE = 'LCD_SET_BLUE';
+export const SET_RGB = 'LCD_SET_RGB';
 export const SET_TEXT = 'LCD_SET_TEXT';
 
 export default function lcd(state = {}, action) {
   switch(action.type) {
-    case SET_RED:
+    case SET_RGB:
       return {
         ...state,
         [action.socket]: {
           ...state[action.socket],
-          r: action.value
-        }
-      };
-    case SET_GREEN:
-      return {
-        ...state,
-        [action.socket]: {
-          ...state[action.socket],
-          g: action.value
-        }
-      };
-    case SET_BLUE:
-      return {
-        ...state,
-        [action.socket]: {
-          ...state[action.socket],
-          b: action.value
+          rgb: action.rgb
         }
       };
     case SET_TEXT:
@@ -46,49 +28,31 @@ export default function lcd(state = {}, action) {
   }
 }
 
+var debounceTimeout = -1;
+
 const sendData = (socket) => {
   return (dispatch, getState) => {
     var state = getState();
 
     if(
-      state.lcd[socket].r !== undefined &&
-      state.lcd[socket].g !== undefined &&
-      state.lcd[socket].b !== undefined &&
+      state.lcd[socket].rgb !== undefined &&
       state.lcd[socket].text !== undefined
     ) {
-      axios.post('/api/lcd/' + socket, state.lcd[socket]);
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        axios.post('/api/lcd/' + socket, state.lcd[socket]);
+      }, 1000);
     }
   }
 };
 
-export const setRed = (socket, value) => {
+export const setRgb = (socket, rgb, hex) => {
   return (dispatch) => {
     dispatch({
-      type: SET_RED,
+      type: SET_RGB,
       socket,
-      value
-    });
-    dispatch(sendData(socket));
-  };
-};
-
-export const setGreen = (socket, value) => {
-  return (dispatch) => {
-    dispatch({
-      type: SET_GREEN,
-      socket,
-      value
-    });
-    dispatch(sendData(socket));
-  };
-};
-
-export const setBlue = (socket, value) => {
-  return (dispatch) => {
-    dispatch({
-      type: SET_BLUE,
-      socket,
-      value
+      rgb,
+      hex
     });
     dispatch(sendData(socket));
   };

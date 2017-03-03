@@ -1,24 +1,19 @@
 //@flow
 
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import { SketchPicker } from 'react-color';
 
-import {setRed, setGreen, setBlue, setText} from '../redux/lcd';
+import {setRgb, setText} from '../redux/lcd';
 
-export const Lcd = ({status, socket, setRed, setGreen, setBlue, setText}) => (
+export const Lcd = ({status, socket, setRgb, setText}) => (
   <div id="lcd" className="container-fluid">
     Lcd Socket {socket}&nbsp;
     <label>
-      Red: <input type="number" value={status.r} onChange={setRed}/>
+      Color: <SketchPicker color={status.rgb} onChange={setRgb} />
     </label>&nbsp;
     <label>
-      Green: <input type="number" value={status.g} onChange={setGreen}/>
-    </label>&nbsp;
-    <label>
-      Blue: <input type="number" value={status.b} onChange={setBlue}/>
-    </label>&nbsp;
-    <label>
-      Text: <textarea type="text" value={status.text} onChange={setText}/>
+      Text: <textarea type="text" value={status.value} onChange={setText} />
     </label>
   </div>
 );
@@ -29,14 +24,8 @@ const mapStateToProps = ({lcd}, {socket}) => ({
 });
 
 const mapDispatchToProps = (dispatch, {socket}) => ({
-  setRed: (e) => {
-    dispatch(setRed(socket, e.target.value));
-  },
-  setGreen: (e) => {
-    dispatch(setGreen(socket, e.target.value));
-  },
-  setBlue: (e) => {
-    dispatch(setBlue(socket, e.target.value));
+  setRgb: (e) => {
+    dispatch(setRgb(socket, e.rgb));
   },
   setText: (e) => {
     dispatch(setText(socket, e.target.value));

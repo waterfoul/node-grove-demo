@@ -3,6 +3,7 @@
 
 const express = require('express');
 const i2c = require('i2c');
+const exec = require('exec');
 
 const lcd = express.Router('lcd');
 
@@ -15,6 +16,7 @@ const boardReady = new Promise((resolve) => {
   });
 
   board.on('ready', () => {
+    exec(['avrdude', '-c', 'gpio', '-p', 'm328p'], console.log.bind(console));
     resolve(board);
   });
 });
@@ -22,11 +24,19 @@ const boardReady = new Promise((resolve) => {
 lcd.post('/:socket', (req, res) => {
   boardReady.then(() => {
     const lcd = new five.LCD({
-      controller: "JHD1313M1"
+      controller: "JHD1313M1",
+      rows: 2,
+      columns: 16
     });
 
-    lcd.bgColor(req.body.r, req.body.g, req.body.b);
-    lcd.print(req.body.text);
+    lcd.bgColor(req.body.rgb.r, req.body.rgb.g, req.body.rgb.b);
+    const text = req.body.text.split('\n');
+
+    lcd.cursor(0, 0);
+    lcd.print(text[0] || '');
+
+    lcd.cursor(1, 0);
+    lcd.print(text[1] || '');
   });
   res.sendStatus(200);
 });
